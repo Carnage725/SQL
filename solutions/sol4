@@ -1,0 +1,75 @@
+sql_practice=# SELECT e.name, p.name, o.quantity, (o.quantity * p.price) as total_cost
+FROM orders o
+INNER JOIN employees e ON e.id = o.employee_id
+INNER JOIN products p ON p.id = o.product_id;
+     name     |    name    | quantity | total_cost 
+--------------+------------+----------+------------
+ Arun Kumar   | Laptop     |        1 |    1200.00
+ Arun Kumar   | Headphones |        2 |     170.00
+ Priya Sharma | Desk Chair |        1 |     350.00
+ Rahul Verma  | Notebook   |       10 |      55.00
+ Vikram Singh | Laptop     |        1 |    1200.00
+ Vikram Singh | Monitor    |        2 |     900.00
+ Karan Mehta  | Headphones |        1 |      85.00
+ Deepa Nair   | Notebook   |        5 |      27.50
+(8 rows)
+
+sql_practice=# SELECT e.name, COUNT(o.id) AS order_count
+sql_practice-# FROM employees e
+sql_practice-# LEFT JOIN orders o ON e.id = o.employee_id
+sql_practice-# GROUP BY e.id, e.name;
+     name     | order_count 
+--------------+-------------
+ Amit Joshi   |           0
+ Rahul Verma  |           1
+ Vikram Singh |           2
+ Sneha Patel  |           0
+ Neha Gupta   |           0
+ Anita Desai  |           0
+ Priya Sharma |           1
+ Karan Mehta  |           1
+ Arun Kumar   |           2
+ Deepa Nair   |           1
+(10 rows)
+
+sql_practice=# SELECT p.name, p.category
+FROM products p
+LEFT JOIN orders o ON p.id = o.product_id
+WHERE o.id IS NULL;
+ name | category 
+------+----------
+(0 rows)
+
+sql_practice=# SELECT 
+    e.name, 
+    SUM(o.quantity * p.price) AS total_spent
+FROM employees e
+JOIN orders o ON e.id = o.employee_id
+JOIN products p ON o.product_id = p.id
+GROUP BY e.id, e.name
+ORDER BY total_spent DESC;
+     name     | total_spent 
+--------------+-------------
+ Vikram Singh |     2100.00
+ Arun Kumar   |     1370.00
+ Priya Sharma |      350.00
+ Karan Mehta  |       85.00
+ Rahul Verma  |       55.00
+ Deepa Nair   |       27.50
+(6 rows)
+
+sql_practice=# SELECT 
+    e.name AS employee_name, 
+    p.name AS product_name, 
+    o.order_date
+FROM orders o
+JOIN employees e ON o.employee_id = e.id
+JOIN products p ON o.product_id = p.id
+ORDER BY o.order_date DESC
+LIMIT 1;
+ employee_name | product_name | order_date 
+---------------+--------------+------------
+ Deepa Nair    | Notebook     | 2024-04-12
+(1 row)
+
+sql_practice=# 
